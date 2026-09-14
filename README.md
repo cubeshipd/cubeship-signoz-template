@@ -23,8 +23,8 @@ ClickHouse it all lives in.
 - **collector** — SigNoz's OpenTelemetry collector `v0.144.9`, built from
   [`collector/Dockerfile`](collector/Dockerfile). It migrates ClickHouse's
   schema when it starts, then receives OTLP: gRPC on `4317` and HTTP on
-  `4318` inside the instance, and HTTP with a bearer token on the ingest
-  domain.
+  `4318` inside the instance, gRPC on a published TCP port, and HTTP with a
+  bearer token on the ingest domain.
 - **signoz** — SigNoz `v0.141.1`, the published `signoz/signoz` image: the
   API, the UI and the alert manager, on the domain you choose.
 - **signoz-db** — a managed Postgres 16 database, where SigNoz keeps users,
@@ -33,7 +33,7 @@ ClickHouse it all lives in.
 These are the versions SigNoz's own Docker install,
 [Foundry](https://github.com/SigNoz/foundry), runs together.
 
-It needs Cubeship 0.7.0 or newer, and **an admin to install it**: two of its
+It needs Cubeship 0.7.2 or newer, and **an admin to install it**: two of its
 apps are built on the instance, and only admins build.
 
 ## Why two apps are built
@@ -59,6 +59,7 @@ collector.
 | --- | --- |
 | Where the SigNoz UI answers | A domain you control, pointed at your instance. |
 | Where telemetry from outside the instance is sent | A second domain, for OTLP over HTTP from anywhere else. |
+| The port OTLP gRPC answers on | `4317` by default. Choose a port from `1024` to `65535`, and open it in your provider's firewall too. |
 
 Three secrets are generated and shown once — keep the first:
 
@@ -87,7 +88,7 @@ OTEL_SERVICE_NAME=my-app
 Or gRPC, on `4317`. The internal name follows the project, environment and app
 names you install with; it is on the app's page in the dashboard.
 
-**From anywhere else**, send OTLP over HTTP to the ingest domain with the
+**From anywhere else, over HTTP**, send OTLP to the ingest domain with the
 token:
 
 ```bash
@@ -96,9 +97,10 @@ OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
 OTEL_EXPORTER_OTLP_HEADERS="Authorization=Bearer%20<ingest token>"
 ```
 
-A request without the token is refused with `401`. gRPC cannot be received
-from outside: a Cubeship domain carries HTTP only, so an exporter set to
-`grpc` must be switched to `http/protobuf`.
+A request without the token is refused with `401`. **For OTLP gRPC**, connect
+to the instance's address on the published port you chose. The TCP port does
+not add authentication or TLS, so protect it with your provider's firewall or
+use a secured network path.
 
 ## How the schema is migrated
 

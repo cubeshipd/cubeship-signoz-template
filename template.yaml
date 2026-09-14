@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://cubeship.dev/schema/template/v1.json
 version: 1
-minCubeship: "0.7.0"
+minCubeship: "0.7.2"
 project: signoz
 
 inputs:
@@ -23,6 +23,13 @@ inputs:
     type: secret
     label: The secret SigNoz signs sessions with
     generate: 48
+  - key: grpcPort
+    type: number
+    label: The port OTLP gRPC answers on
+    help: Choose a port from 1024 to 65535, and open it in your provider's firewall too.
+    default: 4317
+    min: 1024
+    max: 65535
 
 databases:
   - key: meta
@@ -62,6 +69,9 @@ apps:
     domains:
       - host: ${input.ingestDomain}
         port: 4319
+    tcp:
+      - port: 4317
+        host: ${input.grpcPort}
     limits: { cpu: 1, memory: 1Gi }
     env:
       SIGNOZ_OTEL_COLLECTOR_CLICKHOUSE_DSN: tcp://default:${input.clickhousePassword}@${app.clickhouse.internal}:9000
