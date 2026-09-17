@@ -161,3 +161,15 @@ Deploy the collector before `signoz`, so the schema is migrated first.
 ClickHouse is limited to 2 CPUs and 4 GiB of memory, the collector and SigNoz
 to 1 CPU and 1 GiB each. ClickHouse sizes its caches from its limit; raise it
 first when queries over long ranges fail for memory.
+
+---
+
+<!-- cubeship-crosslink -->
+
+## About Cubeship
+
+This is a template for [**Cubeship**](https://github.com/cubeshipd/cubeship) —
+a PaaS you run on your own server: `docker push`, and it is live, with HTTPS,
+a database beside it, and a second machine when one stops being enough.
+
+Browse every template at [cubeship.dev/templates](https://cubeship.dev/templates).
