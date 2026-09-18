@@ -2,7 +2,7 @@
 # configuration is a file, Cubeship cannot mount one, and upstream fetches the
 # histogramQuantile function in a container that runs once and exits, which
 # Cubeship has no such thing as. So both are built in here.
-FROM clickhouse/clickhouse-server:25.12.11
+FROM clickhouse/clickhouse-server:26.8.7
 
 RUN arch="$(uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/)" \
     && mkdir -p /opt/clickhouse/user_scripts \
