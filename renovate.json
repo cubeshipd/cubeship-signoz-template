@@ -41,6 +41,12 @@
       "description": "CI tooling does not change what users deploy, so it stays out of the changelog and cuts no release.",
       "matchManagers": ["github-actions"],
       "semanticCommitType": "chore"
+    },
+    {
+      "description": "ClickHouse follows SigNoz, not the newest release. SigNoz's own compose pins clickhouse-server 25.12.5, and this image carries SigNoz's config.xml and its histogramQuantile function — a ClickHouse the project does not test would break the template for whoever installs it, and nothing here would catch that. Patches inside 25.12 still come through; moving to 26.x is a decision that follows an upstream bump.",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["clickhouse/clickhouse-server"],
+      "allowedVersions": "<26.0.0"
     }
   ]
 }
