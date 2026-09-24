@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/cubeshipd/cubeship-signoz-template/compare/v1.2.0...v1.3.0) (2026-09-24)
+
+
+### Features
+
+* update signoz/signoz docker tag to v0.143.0 ([#13](https://github.com/cubeshipd/cubeship-signoz-template/issues/13)) ([640e924](https://github.com/cubeshipd/cubeship-signoz-template/commit/640e924e196f8eaeab5318407cf6d42ce0a179e5))
+
 ## [1.2.0](https://github.com/cubeshipd/cubeship-signoz-template/compare/v1.1.1...v1.2.0) (2026-09-18)
 
 
